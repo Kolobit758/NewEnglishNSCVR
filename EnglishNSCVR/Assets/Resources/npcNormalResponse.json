@@ -1,0 +1,6 @@
+{ 
+    "ai_response": "Oh i need burger cheese", 
+    "intent": "delivery", 
+    "is_end_game": true, 
+    "evaluation": null
+}
