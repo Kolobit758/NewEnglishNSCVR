@@ -15,6 +15,7 @@ public class OrderController : MonoBehaviour
     public Gamesubmary gamesubmary;
     public NPC_Controller nPC_Controller;
     public OrderData newOrder;
+    public ConverRulebase_Manager converRulebase_Manager;
 
     orderState currentOrderState;
 
@@ -128,6 +129,7 @@ public class OrderController : MonoBehaviour
         Debug.Log("total_price : " + total_price);
         OnCostChanged();
         GameEvent.OnPlayerConfirmedOrder?.Invoke();
+        converRulebase_Manager.updateTotalCost(total_price);
     }
 
     public void testOrder()
@@ -430,6 +432,7 @@ public class OrderController : MonoBehaviour
         List<int> randomNums = new List<int>();
 
         newOrder = new OrderData(foods[ranFood].name, beverages[ranBvg].name, toppings[ranTopping].name, thisTaste, isSpecial);
+        converRulebase_Manager.setCurentOrder(newOrder);
         return newOrder;
     }
 }

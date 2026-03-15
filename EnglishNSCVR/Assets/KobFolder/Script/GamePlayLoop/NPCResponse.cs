@@ -7,6 +7,14 @@ public class NPCResponse
     public string intent; // "order_food", "small_talk"
     public bool is_end_game;   // คำพูดที่ NPC จะพูด
     public EvaluationData evaluation;
+
+    public NPCResponse(string res, string intent, bool is_end, EvaluationData evaluation)
+    {
+        ai_response = res;
+        this.intent = intent;
+        is_end_game = is_end;
+        this.evaluation = evaluation;
+    }
 }
 
 [System.Serializable]
@@ -15,6 +23,12 @@ public class NPCOrderRequest
     public string npcId;
     public string intent; // "order_food"
     public OrderData order;
+    public NPCOrderRequest(string npcId, string intent, OrderData order)
+    {
+        this.npcId = npcId;
+        this.intent = intent;
+        this.order = order;
+    }
 }
 
 

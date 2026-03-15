@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine.Rendering;
 using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
+using static PlayerGamemode;
 
 public class Gamesubmary : MonoBehaviour
 {
@@ -18,7 +19,9 @@ public class Gamesubmary : MonoBehaviour
     [Header("UI")]
     public TMP_Text rank; // rank all conver
     public TMP_Text rankText;
-    public GameObject gameSubmaryUI; // all submary UI -> close || open
+    public GameObject gameSubmaryPremium_UI; // all submary UI -> close || open
+    public GameObject gameSubmaryFree_UI; // all submary UI -> close || open
+    public GameObject gameSubmary_UI; // all submary UI -> close || open
     [Header("mini ui")]
     public GameObject recabTabBtnParent;
     public GameObject recabBtnPrefab;
@@ -42,7 +45,7 @@ public class Gamesubmary : MonoBehaviour
     {
 
         GameEvent.OnGameEnding += UISubmaryAll;
-        gameSubmaryUI.SetActive(false);
+        gameSubmary_UI.SetActive(false);
     }
     void OnDisable()
     {
@@ -150,6 +153,7 @@ public class Gamesubmary : MonoBehaviour
     public void OpenThisPanel(int page)
     {
         gameRecabPanel.SetActive(false);
+        
         recabTab.SetActive(true);
         EvaluationData thisPageData = statusSumary[page - 1];
         title.text = "Coversation : " + page;
@@ -161,7 +165,17 @@ public class Gamesubmary : MonoBehaviour
 
     public void UISubmaryAll()
     {
-        gameSubmaryUI.SetActive(true);
+        gameSubmary_UI.SetActive(true);
+        if(currentMode != PlayerMode.Free)
+        {
+            gameSubmaryPremium_UI.SetActive(true);
+
+        }
+        else
+        {
+            gameSubmaryFree_UI.SetActive(true);
+        }
+
         recabTab.SetActive(false);
         string endRank = RankCalculate(currentScore);
         Debug.Log("rank : " + endRank + " score : " + currentScore);

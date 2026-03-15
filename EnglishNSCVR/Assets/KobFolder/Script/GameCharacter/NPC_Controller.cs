@@ -9,6 +9,7 @@ public class NPC_Controller : MonoBehaviour
     public bool isTest = false;
     public WordManager wordManager;
     public OrderController orderController;
+    public ConverRulebase_Manager converRulebase_Manager;
     public List<SO_NPC> npcs = new List<SO_NPC>();
     public GameObject currrentNPC;
     public float speed = 5;
@@ -118,6 +119,7 @@ public class NPC_Controller : MonoBehaviour
     public void RandomMeal()
     {
         OrderData order = orderController.RandomOrder();
+
         SendMessageToServer(order.food,order.beverage,order.topping,order.taste,order.isSpecial);
     }
 

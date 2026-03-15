@@ -1,16 +1,21 @@
 using UnityEngine;
 using UnityEngine.UI;
+using static PlayerGamemode;
 
 public class ConverManager : MonoBehaviour
 {
     public NPC_Controller nPC_Controller;
- 
+
     public Gamesubmary gamesubmary;
     conversationState currentConverState;
     public GameManager gameManager;
     public CheckSuitableWord checkSuitableWord;
+    public ConverRulebase_Manager converRulebase_Manager;
+
+    [SerializeField] PlayerMode currentMode = PlayerMode.Free;
 
     [SerializeField] string jsonSelect;
+    [SerializeField]private string testText = "here you are";
 
 
 
@@ -64,42 +69,13 @@ public class ConverManager : MonoBehaviour
 
         SetState(conversationState.NPC_Response);
     }
-    public void NPCResponse()
-    {
-        //NPC get gpt text from api and change text to sound play to player 
-        TextAsset orderResponse = Resources.Load<TextAsset>(jsonSelect);
-        NPCResponse msg = JsonUtility.FromJson<NPCResponse>(orderResponse.text);
-        // if response type is order_food => invoke OnNPCOrdered Evente
-        if (msg.intent == "order")
-        {
-            nPC_Controller.showMessageFromJson(msg);
-            GameEvent.OnNPCOrdered?.Invoke();
-            Debug.Log("order : " + msg.intent + " " + msg.ai_response);
-        }
-        else
-        {
-            nPC_Controller.showMessageFromJson(msg);
-            Debug.Log("normalTalk : " + msg.intent + " " + msg.ai_response);
-        }
-        SetState(conversationState.Finished);
-    }
+
     public void FinishedConver()
     {
         SetState(conversationState.NPC_Wait);
     }
 
-    // public void TestReadJson()
-    // {
 
-    //     TextAsset orderResponse = Resources.Load<TextAsset>("npcOrderResponse");
-    //     NPCResponse msg = JsonUtility.FromJson<NPCResponse>(orderResponse.text);
-    //     // if response type is order_food => invoke OnNPCOrdered Evente
-    //     if (msg.intent == "order")
-    //     {
-    //         GameEvent.OnNPCOrdered?.Invoke();
-    //         Debug.Log("order" + msg.intent + " " + msg.ai_response);
-    //     }
-    // }
 
 
     #endregion
@@ -121,22 +97,37 @@ public class ConverManager : MonoBehaviour
         checkSuitableWord.CheckWord(text);
         Debug.Log("=========Check Word===========");
 
-        GetComponent<PlayerMsgToServer>().SendMessageToServer(text, (response) =>
+        if (currentMode == PlayerMode.Free)
         {
-            HandleNPCResponse(response);
-        });
+            HandleNPCResponse(converRulebase_Manager.NPC_Rulebase_Response(text));
+        }
+        else
+        {
+            GetComponent<PlayerMsgToServer>().SendMessageToServer(text, (response) =>
+            {
+                HandleNPCResponse(response);
+            });
+        }
+
 
     }
     public void TestEndconver()
     {
-        string text = "here you are";
+        string text = testText;
 
         checkSuitableWord.CheckWord(text);
         Debug.Log("=========Check Word===========");
-        GetComponent<PlayerMsgToServer>().SendMessageToServer(text, (response) =>
+        if (currentMode == PlayerMode.Free)
         {
-            HandleNPCResponse(response);
-        });
+            HandleNPCResponse(converRulebase_Manager.NPC_Rulebase_Response(text));
+        }
+        else
+        {
+            GetComponent<PlayerMsgToServer>().SendMessageToServer(text, (response) =>
+            {
+                HandleNPCResponse(response);
+            });
+        }
 
     }
     private void HandleNPCResponse(NPCResponse msg)
@@ -144,7 +135,7 @@ public class ConverManager : MonoBehaviour
         if (msg == null) return;
 
         nPC_Controller.showMessageFromJson(msg);
-        
+
 
         switch (msg.intent)
         {
@@ -168,9 +159,13 @@ public class ConverManager : MonoBehaviour
             case "delivery":
                 if (msg.is_end_game)
                 {
+                    if(msg.evaluation == null) return; 
                     Debug.Log("Game Finished! Rank: " + msg.evaluation.rank);
                     gamesubmary.addItem(msg.evaluation.rank, msg.evaluation.strengths, msg.evaluation.improvements, msg.evaluation.next_rank_tip);
                 }
+                break;
+            case "Unidentified":
+                Debug.Log("Undentified text : can you say again");
                 break;
 
             default:
