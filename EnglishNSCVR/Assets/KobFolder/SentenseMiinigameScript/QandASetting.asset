@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 083daee2e30803146bc0461401d8f655, type: 3}
+  m_Name: QandASetting
+  m_EditorClassIdentifier: Assembly-CSharp::SO_QandA
+  questions:
+  - question: What would you like to eat
+    sound: {fileID: 0}
+    awnserThisQuestion: I would like to eat phadthai
+  - question: How do you do.
+    sound: {fileID: 0}
+    awnserThisQuestion: I'm doing well
+  - question: Why you are so tried.
+    sound: {fileID: 0}
+    awnserThisQuestion: I work from morning until evening
+  answers:
+  - I feel good.
+  - I'm hungrry.
+  - I'm doing well
+  words: []
