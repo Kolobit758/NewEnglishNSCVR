@@ -12,11 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd3252b8bafef9947bfc23f44b4b6718, type: 3}
   m_Name: Serve
   m_EditorClassIdentifier: Assembly-CSharp::SO_WordIntent
-  intetnts: 2
-  words:
+  intetnts: 3
+  subType: 
+  keywords:
   - here you are
+  - this is for you
   resWords:
   - bro
   - man
   dialogueFormat:
   - Thank you {noun}
+  placeHolderWord: 

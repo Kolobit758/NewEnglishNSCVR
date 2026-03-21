@@ -19,6 +19,7 @@ public class ScoreUpdateAnimation : MonoBehaviour
             scoreChange.text = scoreUpdate.ToString();
             scoreChange.color = Color.red;
         }
+        StartCoroutine(PunchScale());
 
         anim.ResetTrigger("ScoreUpdate"); // ✅ รีเซ็ตก่อน
         anim.SetTrigger("ScoreUpdate");

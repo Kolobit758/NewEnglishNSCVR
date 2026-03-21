@@ -42,15 +42,9 @@ public class HitZone : MonoBehaviour
     {
         if (boxesInZone.Count > 0)
         {
-            // คืนค่าตัวที่อยู่ใกล้จุดศูนย์กลางที่สุด หรือตัวแรกที่เข้ามา
-            if (questionManager.step == 3)
-            {
-                boxesInZone[0].SelectBox();
-            }
-
-            return boxesInZone[0].data;
+            return boxesInZone[0].data; // แค่ return data
         }
-        return null; // กดแป้ก (ไม่มีกล่องอยู่ในโซน)
+        return null;
     }
 
 }

@@ -9,19 +9,22 @@ public class QuestionManager : MonoBehaviour
     public BeatManager beatManager;
     public int step;
     public int currentScore;
+    private bool isProcessingChoice = false; // เพิ่ม field นี้
     [SerializeField] int decreseScore;
     [SerializeField] int increseScore;
 
-    [Header("Current Data")]
+    [Header("thrid Data")]
 
-    private string correctSentence;
-    private string[] correctSequence;
+    public string correctSentence;
+    public string[] correctSequence;
+
 
     public List<string> thirdAwsSelect = new List<string>();
-
+    [Header("Current Data")]
     private int nextWordIndex = 0;
     private List<string> currentChoices = new List<string>();
     public List<GameObject> selectedBoxes = new List<GameObject>();
+    public List<Question_Sound> questionHistory = new List<Question_Sound>();
 
 
     [Header("Settings")]
@@ -42,6 +45,7 @@ public class QuestionManager : MonoBehaviour
     public Question_Sound firstQuestion;
     public string secondQuestion;
     public string thirdQuestion;
+    public int QuestionCount = 0;
 
 
     private List<GameObject> activeBoxes = new List<GameObject>();
@@ -67,6 +71,8 @@ public class QuestionManager : MonoBehaviour
 
     void GameLoopLogic()
     {
+        Debug.Log("Step = " + step + " | spawnQueue = " + spawnQueue);
+
         if (step == 0)
         {
             StartStep1();
@@ -75,6 +81,7 @@ public class QuestionManager : MonoBehaviour
 
         if (spawnQueue > 0)
         {
+            Debug.Log(">>> SPAWNING STEP " + step);
             SpawnProcess();
             spawnQueue--;
         }
@@ -88,7 +95,31 @@ public class QuestionManager : MonoBehaviour
 
         QuestionUI.SetActive(false);
 
-        firstQuestion = sO_QandA.questions[Random.Range(0, sO_QandA.questions.Count)];
+
+
+
+        if (QuestionCount < sO_QandA.questions.Count)
+        {
+            int ranNum;
+            Question_Sound randomQuestion;
+
+            do
+            {
+                ranNum = Random.Range(0, sO_QandA.questions.Count);
+                randomQuestion = sO_QandA.questions[ranNum];
+
+            } while (questionHistory.Contains(randomQuestion)); // 🔥 ถ้าซ้ำ → สุ่มใหม่
+
+            firstQuestion = randomQuestion;
+            questionHistory.Add(randomQuestion); // 🔥 ต้อง add ไม่งั้นซ้ำแน่
+            QuestionCount++;
+        }
+        else
+        {
+            beatManager.OutOfQustion();
+        }
+
+
 
         Debug.Log("Let find : " + firstQuestion.question);
 
@@ -114,6 +145,8 @@ public class QuestionManager : MonoBehaviour
 
         spawnQueue = currentChoices.Count;
     }
+
+
 
 
 
@@ -201,6 +234,7 @@ public class QuestionManager : MonoBehaviour
                 ClearOldBoxes();
 
                 StartStep3();
+                Debug.Log("start step 3");
             }
             else
             {
@@ -214,24 +248,40 @@ public class QuestionManager : MonoBehaviour
 
         else if (step == 3)
         {
+
+            if (isProcessingChoice) return; // ✅ ย้ายมาบนสุดก่อนทุกอย่าง
+            isProcessingChoice = true;
+
+            Debug.Log($"boxesInZone count = {hitZone.boxesInZone.Count}");
+            for (int i = 0; i < hitZone.boxesInZone.Count; i++)
+                Debug.Log($"  [{i}] = {hitZone.boxesInZone[i]?.data}");
+            Debug.Log($"nextWordIndex = {nextWordIndex}, expecting = {correctSequence[nextWordIndex]}");
+
             string selected = hitZone.GetCurrentChoice();
-            isCorrect = false; // ✅ reset ก่อน
+            if (string.IsNullOrEmpty(selected))
+            {
+                isProcessingChoice = false; // ✅ อย่าลืม reset ถ้า return กลางทาง
+                return;
+            }
+
+            isCorrect = false;
+
             if (selected == correctSequence[nextWordIndex])
             {
+                hitZone.boxesInZone[0].SelectBox(); // ✅ เรียกตรงนี้แทน
                 thirdAwsSelect.Add(selected);
                 nextWordIndex++;
 
                 if (nextWordIndex >= correctSequence.Length)
-                {
-                    CheckSentence(); // จะไปเรียก ChangeScore ด้านใน
-                }
+                    CheckSentence();
             }
+
             else
             {
+                Debug.Log("not correct");
                 isCorrect = false;
                 ChangeScore();
 
-                // ✅ RESET เกม
                 ClearOldBoxes();
 
                 foreach (GameObject box in selectedBoxes)
@@ -243,13 +293,19 @@ public class QuestionManager : MonoBehaviour
                 selectedBoxes.Clear();
 
                 step = 0;
-
-                beatManager.ChangeRound(currentScore); // ✅ เริ่มรอบใหม่เลย
+                beatManager.ChangeRound(currentScore);
             }
 
-        }
-    }
 
+            StartCoroutine(ResetChoiceFlag()); // ✅ รอ 1 frame แล้วค่อย unlock
+        }
+
+    }
+    IEnumerator ResetChoiceFlag()
+    {
+        yield return null; // รอ 1 frame
+        isProcessingChoice = false;
+    }
 
 
     void StartStep2()
@@ -291,12 +347,14 @@ public class QuestionManager : MonoBehaviour
         ClearOldBoxes();
         step = 3;
 
+        Debug.Log("step 3 begin");
+        hitZone.boxesInZone.Clear(); // 👈 เพิ่มฟังก์ชันนี้
+
         correctSentence = secondQuestion;
 
         ChangeQuestionText.ChangeText(correctSentence);
 
-        correctSequence =
-            correctSentence.Trim().Split(' ');
+        correctSequence = correctSentence.Trim().Split(' ');
 
         nextWordIndex = 0;
 
@@ -312,6 +370,7 @@ public class QuestionManager : MonoBehaviour
         SwapChoice();
 
         spawnQueue = correctSequence.Length;
+        beatManager.ForceNextActionBeat(); // 👈 เพิ่มอันนี้
     }
 
 

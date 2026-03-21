@@ -2923,7 +2923,9 @@ MonoBehaviour:
   strengths: {fileID: 345387583}
   improvements: {fileID: 1786028860}
   next_rank_tip: {fileID: 1786969269}
-  serviceScoreUI: {fileID: 129019882}
+  serviceScoreTexts:
+  - {fileID: 760518737}
+  - {fileID: 129019882}
   backToOverview: {fileID: 96926296}
 --- !u!114 &330585555
 MonoBehaviour:
@@ -5430,7 +5432,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &686722338
 RectTransform:
   m_ObjectHideFlags: 0

@@ -2,10 +2,7 @@ public enum intetnts
 {
     Order,
     PaidMoney,
+    Normal,
     Serve,
-    Greating,
-    Ask_Weather,
-    Ask_Feels,
-    goodbye,
     Unidentified
 }

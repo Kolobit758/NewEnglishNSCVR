@@ -34,19 +34,8 @@ public class BeatManager : MonoBehaviour
     public TMP_Text totalScoreText;
     public GameObject scoreUpadteUI;
 
-    public CanvasGroup flash;
+    public bool hasQuestion = true;
 
-    public void Flash()
-    {
-        StartCoroutine(FlashRoutine());
-    }
-
-    IEnumerator FlashRoutine()
-    {
-        flash.alpha = 0.5f;
-        yield return new WaitForSeconds(0.05f);
-        flash.alpha = 0f;
-    }
 
     void Start()
     {
@@ -80,7 +69,7 @@ public class BeatManager : MonoBehaviour
         if (currentSteps[stepIndex] == 1)
         {
             OnActionBeat?.Invoke();
-            Flash();
+
             Debug.Log($"<color=cyan>Hit!</color> ในชุด {patternLibrary[currentPatternIndex].name}");
         }
 
@@ -117,6 +106,11 @@ public class BeatManager : MonoBehaviour
             submaryUI.SetActive(true);
             totalScoreText.text = "Total Score : " + currentScore;
         }
+        else if (!hasQuestion)
+        {
+            submaryUI.SetActive(true);
+            totalScoreText.text = "Total Score : " + currentScore;
+        }
 
         beatCount = 0;
         stepIndex = 0;
@@ -131,6 +125,15 @@ public class BeatManager : MonoBehaviour
 
         scoreUpadteUI.GetComponent<ScoreUpdateAnimation>().PlayScoreUpdate(scoreChange);
 
+    }
+
+    public void OutOfQustion()
+    {
+        hasQuestion = false;
+    }
+    public void ForceNextActionBeat()
+    {
+        stepIndex = 0; // บังคับให้เริ่มที่ index 0 (ซึ่งเป็น 1)
     }
 
 }

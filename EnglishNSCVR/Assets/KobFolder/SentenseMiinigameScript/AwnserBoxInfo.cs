@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
-using TMPro; // อย่าลืมใส่ถ้าใช้ TextMeshPro
+using TMPro;
+using Unity.VisualScripting; // อย่าลืมใส่ถ้าใช้ TextMeshPro
 
 public class AwnserBoxInfo : MonoBehaviour
 {
@@ -58,6 +59,7 @@ public class AwnserBoxInfo : MonoBehaviour
         hitZone = FindAnyObjectByType<HitZone>();
         if (endBox != null) targetTransform = endBox.transform;
     }
+
 
     void OnEnable()
     {

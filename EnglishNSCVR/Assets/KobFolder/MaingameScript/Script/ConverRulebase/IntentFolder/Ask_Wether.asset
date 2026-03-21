@@ -12,5 +12,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd3252b8bafef9947bfc23f44b4b6718, type: 3}
   m_Name: Ask_Wether
   m_EditorClassIdentifier: Assembly-CSharp::SO_WordIntent
-  intetnts: 4
-  words: []
+  intetnts: 2
+  subType: weather
+  keywords:
+  - weather like
+  - weather today
+  - weather
+  resWords:
+  - cold
+  - hot
+  - rainny
+  - very hot
+  - very cold
+  - good
+  - warm
+  dialogueFormat:
+  - 'today is {weather} '
+  - 'ahh , today is {weather} '
+  - 'oh , today is {weather} '
+  placeHolderWord: '{weather}'

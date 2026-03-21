@@ -12,17 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd3252b8bafef9947bfc23f44b4b6718, type: 3}
   m_Name: Greating
   m_EditorClassIdentifier: Assembly-CSharp::SO_WordIntent
-  intetnts: 3
-  words:
-  - hello
-  - hi
-  - long time no see
-  - hey
-  resWords:
+  intetnts: 2
+  subType: gretting
+  keywords:
   - hi
   - hello
   - yo yo
+  - long time no see
+  resWords:
+  - man
+  - bro
+  - yo yo
   dialogueFormat:
   - hello {noun}
-  - hi {man}
-  - Hi , I'm very hungry {man}
+  - hi {noun}
+  - Hi , I'm very hungry {noun}
+  placeHolderWord: '{noun}'

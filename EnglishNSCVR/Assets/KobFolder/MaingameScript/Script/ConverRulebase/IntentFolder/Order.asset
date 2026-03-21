@@ -13,13 +13,14 @@ MonoBehaviour:
   m_Name: Order
   m_EditorClassIdentifier: Assembly-CSharp::SO_WordIntent
   intetnts: 0
-  words:
+  subType: 
+  keywords:
   - eat
-  - what do you want
-  - what you need
-  - food
+  - what would you like to eat
+  - waht do you want
   resWords: []
   dialogueFormat:
   - I would like to eat {food}  {beverage} {topping} {taste} {special}.
   - I want  {food}  {beverage} {topping} {taste} {special}.
   - I need  {food}  {beverage} {topping} {taste} {special}.
+  placeHolderWord: 

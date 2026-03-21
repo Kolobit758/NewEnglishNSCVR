@@ -12,5 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd3252b8bafef9947bfc23f44b4b6718, type: 3}
   m_Name: Ask_Feels
   m_EditorClassIdentifier: Assembly-CSharp::SO_WordIntent
-  intetnts: 5
-  words: []
+  intetnts: 2
+  subType: feels
+  keywords:
+  - feel
+  - feeling
+  - feels
+  resWords:
+  - tried
+  - good
+  - fine
+  - bad
+  - not ok
+  dialogueFormat:
+  - I'm {feel}
+  placeHolderWord: '{feel}'

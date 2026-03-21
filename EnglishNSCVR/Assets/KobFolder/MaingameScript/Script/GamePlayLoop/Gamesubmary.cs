@@ -35,7 +35,7 @@ public class Gamesubmary : MonoBehaviour
     public TMP_Text strengths;
     public TMP_Text improvements;
     public TMP_Text next_rank_tip;
-    public TMP_Text serviceScoreUI;
+    public List<TMP_Text> serviceScoreTexts = new List<TMP_Text>();
     public Button backToOverview;
 
 
@@ -189,11 +189,18 @@ public class Gamesubmary : MonoBehaviour
             rankText.text = "Your english  skill is rank : " + endRank;
         }
 
-        serviceScoreUI.text = "Service Score : " + currentServiceScore;
+        
     }
     public void BackToOverview()
     {
         gameRecabPanel.SetActive(true);
         recabTab.SetActive(false);
+    }
+    public void UpdateSerciveScoreUI()
+    {
+        foreach(var serviceScoreUI in serviceScoreTexts)
+        {
+            serviceScoreUI.text = "Service Score : " + currentServiceScore;
+        }
     }
 }

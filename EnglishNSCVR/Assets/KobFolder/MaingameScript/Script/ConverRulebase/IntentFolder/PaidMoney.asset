@@ -13,9 +13,13 @@ MonoBehaviour:
   m_Name: PaidMoney
   m_EditorClassIdentifier: Assembly-CSharp::SO_WordIntent
   intetnts: 1
-  words:
+  subType: 
+  keywords:
   - bath
+  - you could pay
   - pay
+  - paid
   resWords: []
   dialogueFormat:
   - Ok i have paid for {total_cost} bath.
+  placeHolderWord: 

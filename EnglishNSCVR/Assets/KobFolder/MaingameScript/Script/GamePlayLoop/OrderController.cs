@@ -299,6 +299,7 @@ public class OrderController : MonoBehaviour
 
         // 1. เรียกเช็คแค่ครั้งเดียว แล้วเก็บผลลัพธ์ไว้ในตัวแปร
         bool result = isRightServe();
+        Debug.Log("isRightServe : " + result);
 
         // 2. ใช้ตัวแปรนั้นในการตัดสินใจ
         if (result)
@@ -337,6 +338,7 @@ public class OrderController : MonoBehaviour
     public void UpdateServiceScore(int score)
     {
         gamesubmary.currentServiceScore += score;
+        gamesubmary.UpdateSerciveScoreUI();
     }
 
     bool isRightServe()
@@ -345,26 +347,31 @@ public class OrderController : MonoBehaviour
         if (currentOrder.food.name != newOrder.food)
         {
             UpdateServiceScore(-2);
+            Debug.Log("-2 service score");
             isRightServe = false;
         }
         if (currentOrder.beverage.name != newOrder.beverage)
         {
             UpdateServiceScore(-2);
+            Debug.Log("-2 service score");
             isRightServe = false;
         }
         if (currentOrder.topping.name != newOrder.topping)
         {
             UpdateServiceScore(-2);
+            Debug.Log("-2 service score");
             isRightServe = false;
         }
         if (currentOrder.taste != newOrder.taste)
         {
             UpdateServiceScore(-2);
+            Debug.Log("-2 service score");
             isRightServe = false;
         }
         if (currentOrder.isSpecial != newOrder.isSpecial)
         {
             UpdateServiceScore(-2);
+            Debug.Log("-2 service score");
             isRightServe = false;
         }
 

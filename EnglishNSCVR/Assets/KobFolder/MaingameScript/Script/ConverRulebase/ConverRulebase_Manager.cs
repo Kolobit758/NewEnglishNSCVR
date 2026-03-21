@@ -23,7 +23,7 @@ public class ConverRulebase_Manager : MonoBehaviour
 
         foreach (SO_WordIntent intent in wordIntents)
         {
-            foreach (string word in intent.words)
+            foreach (string word in intent.keywords)
             {
                 // เช็คว่าในประโยคมี Keyword ของ Intent นั้นๆ ไหม
                 if (text.Contains(word.ToLower()))
@@ -45,6 +45,7 @@ public class ConverRulebase_Manager : MonoBehaviour
                             continue;
                         }
                     }
+               
 
                     // --- กรณีปกติ: Intent อื่นๆ (Order, Greeting, etc.) ---
                     thisWordIntent = intent;
@@ -68,21 +69,13 @@ public class ConverRulebase_Manager : MonoBehaviour
             case intetnts.Serve:
                 nPCResponse = Response_Serve(thisWordIntent);
                 break;
-            case intetnts.Greating:
-                nPCResponse = Response_Ask_Normal(thisWordIntent, "{noun}");
-                break;
-            case intetnts.Ask_Weather:
-                nPCResponse = Response_Ask_Normal(thisWordIntent, "{weather}");
-                break;
-            case intetnts.Ask_Feels:
-                nPCResponse = Response_Ask_Normal(thisWordIntent, "{feel}");
+            case intetnts.Normal:
+                nPCResponse = Response_Ask_Normal(thisWordIntent);
                 break;
             case intetnts.Unidentified:
                 nPCResponse = Response_Unidentified(thisWordIntent);
                 break;
-            case intetnts.goodbye:
-                nPCResponse = Response_Ask_Normal(thisWordIntent, "{feel}");
-                break;
+
         }
 
         return nPCResponse;
@@ -96,11 +89,11 @@ public class ConverRulebase_Manager : MonoBehaviour
 
     }
 
-    private NPCResponse Response_Ask_Normal(SO_WordIntent wordIntent, string keyword)
+    private NPCResponse Response_Ask_Normal(SO_WordIntent wordIntent)
     {
         int ranFormatNum = Random.Range(0, wordIntent.dialogueFormat.Count);
         int ranResNum = Random.Range(0, wordIntent.resWords.Count);
-        string resText = wordIntent.dialogueFormat[ranFormatNum].Replace(keyword, wordIntent.resWords[ranResNum]);
+        string resText = wordIntent.dialogueFormat[ranFormatNum].Replace(wordIntent.placeHolderWord, wordIntent.resWords[ranResNum]);
 
         NPCResponse response = new NPCResponse(resText, "normal", false, null);
         return response;
