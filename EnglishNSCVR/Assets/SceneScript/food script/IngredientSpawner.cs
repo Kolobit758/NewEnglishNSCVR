@@ -73,7 +73,7 @@ public class IngredientSpawner : MonoBehaviour
             rb.useGravity = true;
             rb.isKinematic = false;
 
-            rb.velocity = velocity;
+            rb.linearVelocity = velocity;
 
             // 🔥 หมุนตอนลอย
             rb.angularVelocity = Random.insideUnitSphere * 5f;
